@@ -1,5 +1,4 @@
 const request = require('request')
-// var FormData = require('form-data')
 
 function Resolve(LanzouLink, callback) {
     request(LanzouLink, null, (err, res, body) => {
