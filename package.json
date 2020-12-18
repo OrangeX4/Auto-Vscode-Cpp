@@ -1,0 +1,11 @@
+{
+  "name": "auto-vscode-cpp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/OrangeX4/Auto-Vscode-Cpp",
+  "author": "OrangeX4",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
