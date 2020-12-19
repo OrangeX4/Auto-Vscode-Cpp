@@ -1,8 +1,9 @@
+from sys import stdin
 import requests
 import bs4
 import re
 from time import sleep
-from subprocess import Popen, PIPE
+import subprocess
 
 session = requests.session()
 
@@ -111,7 +112,10 @@ def folderSelector():
     $folder = Select-FolderDialog # the variable contains user folder selection
     write-host $folder
     '''
-    child = Popen(("powershell.exe", psScript), stdout=PIPE)
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    # child = subprocess.Popen(("powershell.exe", psScript), stdout=subprocess.PIPE, startupinfo=si, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    child = subprocess.Popen(("powershell.exe", psScript), stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=si, shell=False)
     out = child.communicate()
     child.wait()
     return(out[0].decode('utf-8').replace('\n', ''))
