@@ -63,8 +63,8 @@
             <div class="text">Vscode安装:</div>
             <div class="button" onclick="onVscode()">下载安装</div>
         </div>
-        <div class="path">
-            已安装
+        <div class="path" id="vscode">
+            未安装
         </div>
         <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
         <div class="button-box">
@@ -72,7 +72,7 @@
             <div class="button" onclick="onMinGW()">下载安装</div>
             <div class="button" onclick="onMinGWPath()">修改位置</div>
         </div>
-        <div class="path">
+        <div class="path" id="mingw">
             D:\Program\MinGW
         </div>
         <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
@@ -81,12 +81,12 @@
             <div class="button" onclick="onCodeSpace()">下载安装</div>
             <div class="button" onclick="onCodeSpacePath()">修改位置</div>
         </div>
-        <div class="path">
+        <div class="path" id="codespace">
             D:\CodeSpace
         </div>
         <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
         <p>安装说明:</p>
-        <p>该程序会自动帮您检查是否安装了必要的环境, 如果没有显示"已经安装", 请点击"修改位置"选择一个要安装的位置, 然后点击"下载安装"进行安装, 若安装完毕, 会有弹窗提示, 请稍等几分钟.</p>
+        <p>该程序会自动帮您检查是否安装了必要的环境, 如果没有显示"已安装", 请点击"修改位置"选择一个要安装的位置, 然后点击"下载安装"进行安装, 若安装完毕, 会有提示, 请稍等一两分钟.</p>
         <p>Vscode和MinGW的安装位置不必太过在意, 但是请务必仔细斟酌工程文件的安装位置, 后续进行C和C++的开发, 均需要在该目录下进行, 请用Vscode打开该目录, 当作一个工作区, 否则会无法正常编译运行程序.
         </p>
     </div>
@@ -94,6 +94,7 @@
         function get(url, callback) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
+                // alert(xhr.readyState + ' ' + xhr.status + ' ' + xhr.responseText);
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     callback(xhr.responseText);
                 }
@@ -102,21 +103,57 @@
             xhr.send();
         }
         function onVscode() {
-            alert("vscode");
+            document.getElementById("vscode").innerHTML = "正在安装";
+            get("http://127.0.0.1:5200/vscode", function () {
+                get("http://127.0.0.1:5200/isVscode", function (text) {
+                    if (text === "true") {
+                        document.getElementById("vscode").innerHTML = "已安装";
+                        alert("Vscode安装成功!");
+                    }
+                });
+            });
         }
         function onMinGW() {
-            alert("MinGW");
+            var path = document.getElementById("mingw").innerHTML;
+            document.getElementById("mingw").innerHTML = "正在安装";
+            get("http://127.0.0.1:5200/mingw?path=" + path, function () {
+                get("http://127.0.0.1:5200/isMinGW", function (text) {
+                    if (text === "true") {
+                        document.getElementById("mingw").innerHTML = "已安装";
+                        alert("MinGW安装成功!");
+                    }
+                });
+            });
         }
         function onCodeSpace() {
-            alert("CodeSpace");
+            var path = document.getElementById("codespace").innerHTML;
+            document.getElementById("codespace").innerHTML = "正在安装";
+            get("http://127.0.0.1:5200/codespace?path=" + path, function (text) {
+                if (text === "true") {
+                    document.getElementById("codespace").innerHTML = "已安装";
+                } else {
+                    document.getElementById("codespace").innerHTML = "安装失败";
+                }
+            });
         }
         function onMinGWPath() {
-            alert("MinGWPath");
+            get("http://127.0.0.1:5200/select", function (text) {
+                document.getElementById("mingw").innerHTML = text;
+            });
         }
         function onCodeSpacePath() {
-            alert("CodeSpacePath");
+            get("http://127.0.0.1:5200/select", function (text) {
+                document.getElementById("codespace").innerHTML = text;
+            });
         }
-
+        get("http://127.0.0.1:5200/isVscode", function (text) {
+            if (text === "true")
+                document.getElementById("vscode").innerHTML = "已安装";
+        });
+        get("http://127.0.0.1:5200/isMinGW", function (text) {
+            if (text === "true")
+                document.getElementById("mingw").innerHTML = "已安装";
+        });
 
     </script>
 </body>
