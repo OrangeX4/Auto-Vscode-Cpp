@@ -2,8 +2,10 @@ import requests
 import bs4
 import re
 from time import sleep
+from subprocess import Popen, PIPE
 
 session = requests.session()
+
 
 def remove_notes(html: str) -> str:
     """删除网页的注释"""
@@ -12,6 +14,7 @@ def remove_notes(html: str) -> str:
     html = re.sub(r'<!--.+?-->|\s+//\s*.+', '', html)  # html 注释
     html = re.sub(r'(.+?[,;])\s*//.+', r'\1', html)  # js 注释
     return html
+
 
 def get_zhilian(share_url):
     index_url = 'https://www.lanzous.com'
@@ -43,9 +46,11 @@ def get_zhilian(share_url):
     downloads_page = session.get(url=downloads_url, headers=headers).text
     try:
         # sign = re.search('sign.{89}', downloads_page).group()[7:89]
-        sign = re.search('var ajaxdata = \'.{0,100}\';', downloads_page).group()[16:-2]
+        sign = re.search(
+            'var ajaxdata = \'.{0,100}\';', downloads_page).group()[16:-2]
     except:
-        sign = re.search('var ajaxup = \'.{0,100}\';', downloads_page).group()[13:-2]
+        sign = re.search(
+            'var ajaxup = \'.{0,100}\';', downloads_page).group()[13:-2]
 
     ajaxm_url = 'https://www.lanzous.com/ajaxm.php'
 
@@ -54,11 +59,13 @@ def get_zhilian(share_url):
         'sign': sign,
         'ves': 1
     }
-    file_data = session.post(url=ajaxm_url, data=data, headers=headers_d).json()
+    file_data = session.post(url=ajaxm_url, data=data,
+                             headers=headers_d).json()
     zhilian = str(file_data['dom']) + '/file/' + str(file_data['url']) + '='
     fake_url = zhilian  # 假直连，存在流量异常检测
     # download_page = self._get(fake_url, allow_redirects=False)
-    download_page = session.get(url=fake_url, headers=headers, allow_redirects=False)
+    download_page = session.get(
+        url=fake_url, headers=headers, allow_redirects=False)
     if not download_page:
         return ''
     download_page_html = remove_notes(download_page.text)
@@ -78,7 +85,40 @@ def get_zhilian(share_url):
         return direct_url
 
 
+def folderSelector():
+    psScript = '''
+    Function Select-FolderDialog
+    {
+        param([string]$Description="选择文件夹",[string]$RootFolder="Desktop")
+
+    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") |
+        Out-Null     
+
+    $objForm = New-Object System.Windows.Forms.FolderBrowserDialog
+            $objForm.Rootfolder = $RootFolder
+            $objForm.Description = $Description
+            $Show = $objForm.ShowDialog()
+            If ($Show -eq "OK")
+            {
+                Return $objForm.SelectedPath
+            }
+            Else
+            {
+                Write-Error "Operation cancelled by user."
+            }
+        }
+
+    $folder = Select-FolderDialog # the variable contains user folder selection
+    write-host $folder
+    '''
+    child = Popen(("powershell.exe", psScript), stdout=PIPE)
+    out = child.communicate()
+    child.wait()
+    return(out[0].decode('utf-8').replace('\n', ''))
+
+
 if __name__ == '__main__':
+    folderSelector()
     i = 0
     while True:
         i = i + 1

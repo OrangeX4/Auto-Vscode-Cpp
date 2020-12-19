@@ -1,6 +1,8 @@
-from flask import Flask, redirect, request
-from api import get_zhilian
-from webbrowser import open
+from flask import Flask, request
+from api import get_zhilian, folderSelector
+from webbrowser import open as webopen
+import requests
+from os import environ
 
 app = Flask(__name__)
 
@@ -15,10 +17,16 @@ def test():
         url = request.args.get("url")
     except:
         url = ''
-    return redirect(get_zhilian(url))
+    r = requests.get(get_zhilian(url)) 
+    # http://127.0.0.1:5000/geturl?url=https://www.lanzous.com/i6aa3hg
+    with open("demo3.zip", "wb") as code:
+        code.write(r.content)
 
+@app.route('/select')
+def select():
+    return folderSelector()
 
 if __name__ == '__main__':
-    open('http://127.0.0.1:5000')
+    # print(environ['path'])
+    webopen('http://127.0.0.1:5000')
     app.run()
-    
