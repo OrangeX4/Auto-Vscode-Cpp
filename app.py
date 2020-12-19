@@ -1,4 +1,3 @@
-import sys
 from flask import Flask, request, redirect
 from api import get_zhilian, folderSelector
 from webbrowser import open as webopen
@@ -9,7 +8,6 @@ import py7zr
 app = Flask(__name__)
 
 # 跨域支持
-
 
 def after_request(resp):
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -60,12 +58,13 @@ def mingw():
     with open("MinGW.7z", "wb") as code:
         code.write(r.content)
     archive = py7zr.SevenZipFile('MinGW.7z', mode='r')
-    archive.extractall(path=pathStr)
+    archive.extractall(path=pathStr.strip())
     archive.close()
-    aftPath = environ['path'] + path.join(pathStr, '/MinGw/bin') + ';'
-    command = r"setx WORK1 %s /m" % aftPath
+    aftPath = environ['path'] + ';' + path.join(pathStr.strip(), 'MinGw\\bin') + ';'
+    command = r"setx path %s /m" % aftPath
     environ['path'] = aftPath
     system(command)
+    # print(command)
     if path.exists("MinGW.7z"):
         remove("MinGW.7z")
     return 'true'
@@ -81,10 +80,12 @@ def codespace():
     with open("CodeSpace.7z", "wb") as code:
         code.write(r.content)
     archive = py7zr.SevenZipFile('CodeSpace.7z', mode='r')
-    archive.extractall(path=pathStr)
+    print(pathStr)
+    archive.extractall(path=pathStr.strip())
     archive.close()
-    if path.exists("CodeSpace.7z"):
-        remove("CodeSpace.7z")
+    if path.exists('CodeSpace.7z'):
+        remove('CodeSpace.7z')
+    system('explorer.exe ' + path.join(pathStr.strip(), 'CodeSpace'))
     return 'true'
 
 
