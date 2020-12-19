@@ -4,6 +4,7 @@ from webbrowser import open as webopen
 import requests
 from os import environ, system, path, remove
 import py7zr
+from writeCpp import writeCpp, getMinGW
 
 app = Flask(__name__)
 
@@ -34,7 +35,7 @@ def isVscode():
 
 @app.route('/isMinGW')
 def isMinGW():
-    return 'mingw' in environ['path'].lower() and 'true' or 'false'
+    return getMinGW(environ['path']) != '' and 'true' or 'false'
 
 
 @app.route('/vscode')
@@ -61,10 +62,9 @@ def mingw():
     archive.extractall(path=pathStr.strip())
     archive.close()
     aftPath = environ['path'] + ';' + path.join(pathStr.strip(), 'MinGw\\bin') + ';'
-    command = r"setx path %s /m" % aftPath
+    command = r'setx PATH "' + aftPath + r'"'
     environ['path'] = aftPath
     system(command)
-    # print(command)
     if path.exists("MinGW.7z"):
         remove("MinGW.7z")
     return 'true'
@@ -85,6 +85,7 @@ def codespace():
     archive.close()
     if path.exists('CodeSpace.7z'):
         remove('CodeSpace.7z')
+    writeCpp(environ['path'], path.join(pathStr.strip(), 'CodeSpace'))
     system('explorer.exe ' + path.join(pathStr.strip(), 'CodeSpace'))
     return 'true'
 
@@ -92,3 +93,4 @@ def codespace():
 if __name__ == '__main__':
     webopen('http://127.0.0.1:5200')
     app.run(host='127.0.0.1', port=5200)
+
