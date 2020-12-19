@@ -1,25 +1,114 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>VScode+Cpp自动环境安装</title>
+
+<head>
+    <title>自动安装Vscode + Cpp环境</title>
     <style>
-      div {
-        margin-bottom: 10px;
-      }
+        body {
+            margin-top: 5px;
+            height: 100%;
+            background-color: #fafafa;
+        }
+
+        #main {
+            width: 50%;
+            height: 100%;
+            margin: auto;
+            background-color: white;
+            box-shadow: 0px 0px 7px 2px #ccc;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .path {
+            border: 1px solid #a1a1a1;
+            padding: 10px 40px;
+            margin: 10px;
+            width: calc(100%-40px);
+            border-radius: 10px;
+        }
+
+        .button {
+            border: 1px solid #00aaff;
+            color: #00aaff;
+            margin: 10px;
+            padding: 10px 40px;
+            width: fit-content;
+            border-radius: 10px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .text {
+            margin: 10px;
+            padding-top: 4px;
+            font-size: 24px;
+            float: left;
+        }
+
+        p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
     </style>
-  </head>
-  <body>
-      <form>
-       <div>
-         <label for="file">Choose folder</label>
-         <input type="file" id="file" name="file" webkitdirectory directory>
-       </div>
-       <div>
-         <button>Submit</button>
-       </div>
-      </form>
-     <script>
-       var test = document.querySelector('input');
-     </script>
-  </body>
+</head>
+
+<body>
+    <div id="main">
+        <h1 style="padding-left: 10px;">自动安装Vscode + Cpp环境</h1>
+        <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
+        <div class="button-box">
+            <div class="text">Vscode安装:</div>
+            <div class="button" onclick="onVscode()">下载安装</div>
+        </div>
+        <div class="path">
+            已安装
+        </div>
+        <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
+        <div class="button-box">
+            <div class="text">MinGW安装:</div>
+            <div class="button" onclick="onMinGW()">下载安装</div>
+            <div class="button" onclick="onMinGWPath()">修改位置</div>
+        </div>
+        <div class="path">
+            D:\Program\MinGW
+        </div>
+        <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
+        <div class="button-box">
+            <div class="text">工程文件:</div>
+            <div class="button" onclick="onCodeSpace()">下载安装</div>
+            <div class="button" onclick="onCodeSpacePath()">修改位置</div>
+        </div>
+        <div class="path">
+            D:\CodeSpace
+        </div>
+        <hr style="border:0;background-color:#ccc;height:1px;margin-left: 10px;margin-right: 10px;" />
+        <p>安装说明:</p>
+        <p>该程序会自动帮您检查是否安装了必要的环境, 如果没有显示"已经安装", 请点击"修改位置"选择一个要安装的位置, 然后点击"下载安装"进行安装, 若安装完毕, 会有弹窗提示, 请稍等几分钟.</p>
+        <p>Vscode和MinGW的安装位置不必太过在意, 但是请务必仔细斟酌工程文件的安装位置, 后续进行C和C++的开发, 均需要在该目录下进行, 请用Vscode打开该目录, 当作一个工作区, 否则会无法正常编译运行程序.
+        </p>
+    </div>
+    <script>
+        function onVscode() {
+            alert("vscode");
+        }
+        function onMinGW() {
+            alert("MinGW");
+        }
+        function onCodeSpace() {
+            alert("CodeSpace");
+        }
+        function onMinGWPath() {
+            alert("MinGWPath");
+        }
+        function onCodeSpacePath() {
+            alert("CodeSpacePath");
+        }
+
+
+    </script>
+</body>
+
 </html>
