@@ -91,7 +91,8 @@
         </p>
     </div>
     <script>
-        mingwPath = "D:\\Program\\MinGW";
+        mingwPath = "D:\\Program";
+        codespacePath = "D:\\"
         function get(url, callback) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
@@ -115,9 +116,8 @@
             });
         }
         function onMinGW() {
-            var path = mingwPath;
             document.getElementById("mingw").innerHTML = "正在安装";
-            get("http://127.0.0.1:5200/mingw?path=" + path, function () {
+            get("http://127.0.0.1:5200/mingw?path=" + mingwPath, function () {
                 get("http://127.0.0.1:5200/isMinGW", function (text) {
                     if (text === "true") {
                         document.getElementById("mingw").innerHTML = "已安装";
@@ -127,9 +127,8 @@
             });
         }
         function onCodeSpace() {
-            var path = document.getElementById("codespace").innerHTML;
             document.getElementById("codespace").innerHTML = "正在安装";
-            get(`http://127.0.0.1:5200/codespace?path=${path}&mingw=${mingwPath}"`, function (text) {
+            get(`http://127.0.0.1:5200/codespace?path=${codespacePath}&mingw=${mingwPath}`, function (text) {
                 if (text === "true") {
                     document.getElementById("codespace").innerHTML = "已安装";
                 } else {
@@ -139,13 +138,14 @@
         }
         function onMinGWPath() {
             get("http://127.0.0.1:5200/select", function (text) {
-                document.getElementById("mingw").innerHTML = text;
+                document.getElementById("mingw").innerHTML = text + '\\MinGW';
                 mingwPath = text;
             });
         }
         function onCodeSpacePath() {
             get("http://127.0.0.1:5200/select", function (text) {
-                document.getElementById("codespace").innerHTML = text;
+                document.getElementById("codespace").innerHTML = text + '\\CodeSpace';
+                codespacePath = text;
             });
         }
         get("http://127.0.0.1:5200/isVscode", function (text) {
