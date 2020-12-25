@@ -91,6 +91,7 @@
         </p>
     </div>
     <script>
+        mingwPath = "D:\\Program\\MinGW";
         function get(url, callback) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
@@ -114,7 +115,7 @@
             });
         }
         function onMinGW() {
-            var path = document.getElementById("mingw").innerHTML;
+            var path = mingwPath;
             document.getElementById("mingw").innerHTML = "正在安装";
             get("http://127.0.0.1:5200/mingw?path=" + path, function () {
                 get("http://127.0.0.1:5200/isMinGW", function (text) {
@@ -128,7 +129,7 @@
         function onCodeSpace() {
             var path = document.getElementById("codespace").innerHTML;
             document.getElementById("codespace").innerHTML = "正在安装";
-            get("http://127.0.0.1:5200/codespace?path=" + path, function (text) {
+            get(`http://127.0.0.1:5200/codespace?path=${path}&mingw=${mingwPath}"`, function (text) {
                 if (text === "true") {
                     document.getElementById("codespace").innerHTML = "已安装";
                 } else {
@@ -139,6 +140,7 @@
         function onMinGWPath() {
             get("http://127.0.0.1:5200/select", function (text) {
                 document.getElementById("mingw").innerHTML = text;
+                mingwPath = text;
             });
         }
         function onCodeSpacePath() {
@@ -150,10 +152,11 @@
             if (text === "true")
                 document.getElementById("vscode").innerHTML = "已安装";
         });
-        get("http://127.0.0.1:5200/isMinGW", function (text) {
-            if (text === "true")
-                document.getElementById("mingw").innerHTML = "已安装";
-        });
+
+        // get("http://127.0.0.1:5200/isMinGW", function (text) {
+        //     if (text === "true")
+        //         document.getElementById("mingw").innerHTML = "已安装";
+        // });
 
     </script>
 </body>

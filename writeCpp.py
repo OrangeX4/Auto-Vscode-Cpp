@@ -23,9 +23,9 @@ content = r'''{
     "version": 4
 }'''    
 
-def writeCpp(envPath, CodePath):
+def writeCpp(mingwPath, CodePath):
     with open(path.join(CodePath, r'.vscode/c_cpp_properties.json'), "wb") as code:
-        code.write(content.replace(r'D:/Program/MinGW', getMinGW(envPath)).replace('\\', '/').encode('utf-8'))
+        code.write(content.replace(r'D:/Program/MinGW', mingwPath).replace('\\', '/').encode('utf-8'))
 
 def getMinGW(str):
     value = ''

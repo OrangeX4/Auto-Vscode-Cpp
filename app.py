@@ -74,9 +74,11 @@ def mingw():
 def codespace():
     try:
         pathStr = request.args.get("path")
+        mingwPath = request.args.get('mingw')
     except:
         pathStr = 'D:\\CodeSpace'
-    r = requests.get(get_zhilian('https://wwe.lanzous.com/ixnHGjihzwb'))
+        mingwPath = 'D:\\Program\\MinGW'
+    r = requests.get(get_zhilian('https://wwe.lanzous.com/iN6owjou24j'))
     with open("CodeSpace.7z", "wb") as code:
         code.write(r.content)
     archive = py7zr.SevenZipFile('CodeSpace.7z', mode='r')
@@ -85,7 +87,7 @@ def codespace():
     archive.close()
     if path.exists('CodeSpace.7z'):
         remove('CodeSpace.7z')
-    writeCpp(environ['path'], path.join(pathStr.strip(), 'CodeSpace'))
+    writeCpp(mingwPath + '\\MinGW', path.join(pathStr.strip(), 'CodeSpace'))
     system('explorer.exe ' + path.join(pathStr.strip(), 'CodeSpace'))
     return 'true'
 
