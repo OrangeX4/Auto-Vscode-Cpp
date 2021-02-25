@@ -122,10 +122,10 @@ def folderSelector():
 
 
 if __name__ == '__main__':
-    folderSelector()
-    i = 0
-    while True:
-        i = i + 1
-        print(i)
-        print(get_zhilian('https://www.lanzous.com/i6aa3hg'))
-    # print(get_zhilian('https://www.lanzous.com/i6aa3hg'))
+    # folderSelector()
+    # i = 0
+    # while True:
+    #     i = i + 1
+    #     print(i)
+    #     print(get_zhilian('https://www.lanzous.com/i6aa3hg'))
+    print(get_zhilian('https://www.lanzous.com/i6aa3hg'))

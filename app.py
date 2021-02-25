@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect
-from api import get_zhilian, folderSelector
+from api import folderSelector
 from webbrowser import open as webopen
 import requests
 from os import environ, system, path, remove
@@ -40,7 +40,7 @@ def isMinGW():
 
 @app.route('/vscode')
 def vscode():
-    r = requests.get(get_zhilian("https://wwe.lanzous.com/imCQzjig9yb"))
+    r = requests.get('https://box.nju.edu.cn/f/1ccf7406b7a94b278b84/?dl=1')
     with open("install.exe", "wb") as code:
         code.write(r.content)
     system('install.exe')
@@ -55,7 +55,7 @@ def mingw():
         pathStr = request.args.get('path')
     except:
         pathStr = 'D:\\Program'
-    r = requests.get(get_zhilian('https://wwe.lanzous.com/iqjyBjih6qb'))
+    r = requests.get('https://box.nju.edu.cn/f/720aab0f6e3644a4b29c/?dl=1')
     with open("MinGW.7z", "wb") as code:
         code.write(r.content)
     archive = py7zr.SevenZipFile('MinGW.7z', mode='r')
@@ -78,7 +78,7 @@ def codespace():
     except:
         pathStr = 'D:\\'
         mingwPath = 'D:\\Program'
-    r = requests.get(get_zhilian('https://wwe.lanzous.com/iN6owjou24j'))
+    r = requests.get('https://box.nju.edu.cn/f/d7a6506c07c6423ab816/?dl=1')
     with open("CodeSpace.7z", "wb") as code:
         code.write(r.content)
     archive = py7zr.SevenZipFile('CodeSpace.7z', mode='r')
