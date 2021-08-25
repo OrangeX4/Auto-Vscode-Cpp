@@ -2,6 +2,8 @@
 
 自动安装Vscode和Cpp必要的环境.
 
+## 出了点 bug，还没修好，可以先用 [这个](https://github.com/SDchao/AutoVsCEnv_WPF)
+
 ## 运行
 
 ```bash
